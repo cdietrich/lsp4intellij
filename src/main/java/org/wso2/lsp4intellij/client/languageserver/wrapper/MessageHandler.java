@@ -15,18 +15,22 @@
  */
 package org.wso2.lsp4intellij.client.languageserver.wrapper;
 
+import com.intellij.openapi.diagnostic.Logger;
 import org.eclipse.lsp4j.InitializeResult;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 import org.eclipse.lsp4j.services.LanguageServer;
 import org.jetbrains.annotations.NotNull;
+import org.wso2.lsp4intellij.IntellijLanguageClient;
 import org.wso2.lsp4intellij.client.languageserver.serverdefinition.ServerListener;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 
 class MessageHandler implements Function<MessageConsumer, MessageConsumer> {
+
+    private static Logger LOG = Logger.getInstance(MessageHandler.class);
 
     private ServerListener listener;
     private BooleanSupplier isRunning;
@@ -40,8 +44,8 @@ class MessageHandler implements Function<MessageConsumer, MessageConsumer> {
     @Override
     public MessageConsumer apply(MessageConsumer messageConsumer) {
         return message -> {
+            handleMessage(message);
             if(isRunning.getAsBoolean()) {
-                handleMessage(message);
                 messageConsumer.consume(message);
             }
         };
@@ -49,6 +53,7 @@ class MessageHandler implements Function<MessageConsumer, MessageConsumer> {
     }
 
     private void handleMessage(Message message) {
+        LOG.info("message: " + message + " " + message.getJsonrpc());
         if (message instanceof ResponseMessage) {
             ResponseMessage responseMessage = (ResponseMessage) message;
             if (responseMessage.getResult() instanceof InitializeResult) {

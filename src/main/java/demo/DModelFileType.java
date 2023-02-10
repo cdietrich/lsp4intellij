@@ -29,14 +29,14 @@ import javax.swing.*;
 
 public class DModelFileType extends LanguageFileType {
     protected DModelFileType() {
-        super(new Language("DModel") {
+        super(new Language("dmodel") {
         });
     }
 
     @Override
     public @NonNls
     @NotNull String getName() {
-        return "DModel";
+        return "dmodel";
     }
 
     @Override

@@ -112,6 +112,7 @@ public class DefaultRequestManager implements RequestManager {
 
     @Override
     public void publishDiagnostics(PublishDiagnosticsParams publishDiagnosticsParams) {
+        LOG.info("mimimi publishDiagnostics");
         client.publishDiagnostics(publishDiagnosticsParams);
     }
 

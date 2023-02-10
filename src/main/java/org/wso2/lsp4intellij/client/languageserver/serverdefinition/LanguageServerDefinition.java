@@ -20,6 +20,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.wso2.lsp4intellij.client.connection.StreamConnectionProvider;
 
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -55,7 +56,16 @@ public class LanguageServerDefinition {
             streamConnectionProvider = createConnectionProvider(workingDir);
             streamConnectionProvider.start();
             streamConnectionProviders.put(workingDir, streamConnectionProvider);
-            return new ImmutablePair<>(streamConnectionProvider.getInputStream(), streamConnectionProvider.getOutputStream());
+            return new ImmutablePair<>(new FilterInputStream(streamConnectionProvider.getInputStream()) {
+                @Override
+                public int read(byte[] b, int off, int len) throws IOException {
+                    int bytes = super.read(b, off, len);
+                    final var payload = new byte[bytes];
+                    System.arraycopy(b, off, payload, 0, bytes);
+                    LOG.info(new String(payload));
+                    return bytes;
+                }
+            }, streamConnectionProvider.getOutputStream());
         }
     }
 

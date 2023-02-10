@@ -109,7 +109,9 @@ public class DefaultLanguageClient implements LanguageClient {
 
     @Override
     public void publishDiagnostics(PublishDiagnosticsParams publishDiagnosticsParams) {
+        LOG.info("xxxxxx");
         String uri = FileUtils.sanitizeURI(publishDiagnosticsParams.getUri());
+        LOG.info("publishDiagnostics " + uri);
         List<Diagnostic> diagnostics = publishDiagnosticsParams.getDiagnostics();
         Set<EditorEventManager> managers = EditorEventManagerBase.managersForUri(uri);
         if (managers != null) {

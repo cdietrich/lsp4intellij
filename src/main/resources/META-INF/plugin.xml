@@ -13,7 +13,10 @@ Copyright (c) 2023 Christian Dietrich All Rights Reserved.
 
     <extensions defaultExtensionNs="com.intellij">
 
-
+        <fileType name="dmodel"
+                  implementationClass="demo.DModelFileType"
+                  language="dmodel"
+                  extensions="dmodel"/>
 
         <!-- register a preloading activity. You need to init IntellijLanguageClient with your config, see readme -->
         <preloadingActivity implementation="demo.DModelPreloadingActivity" id="your.plugin.MyPreloadingActivity"/>
@@ -25,39 +28,35 @@ Copyright (c) 2023 Christian Dietrich All Rights Reserved.
         <editorFactoryListener implementation="org.wso2.lsp4intellij.listeners.LSPEditorListener"/>
         <fileDocumentManagerListener implementation="org.wso2.lsp4intellij.listeners.LSPFileDocumentManagerListener"/>
 
+        <completion.contributor implementationClass="org.wso2.lsp4intellij.contributors.LSPCompletionContributor"
+                                id="org.wso2.lsp4intellij.contributors.LSPCompletionContributor" language="any"/>
+
         <!-- for displaying notifications by lsp -->
         <notificationGroup id="lsp" displayType="STICKY_BALLOON"/>
-
         <!-- for displaying the statusbar icon -->
         <statusBarWidgetFactory implementation="org.wso2.lsp4intellij.statusbar.LSPServerStatusWidgetFactory"
                                 id="org.wso2.lsp4intellij.statusbar.LSPServerStatusWidgetFactory"
                                 order="first" />
 
-        <!-- needed for completion -->
-        <completion.contributor implementationClass="org.wso2.lsp4intellij.contributors.LSPCompletionContributor"
-                                id="org.wso2.lsp4intellij.contributors.LSPCompletionContributor" language="DModel"/>
-        <!-- needed for completion as well as signature help -->
-        <typedHandler implementation="org.wso2.lsp4intellij.listeners.LSPTypedHandler"
-                      id="LSPTypedHandler"/>
 
-        <fileType name="DModel file"
-                  implementationClass="demo.DModelFileType"
-                  language="DModel"
-                  extensions="dmodel"/>
 
         <!-- needed for code diagnostics -->
-        <externalAnnotator id="LSPAnnotator" language="DModel"
+        <externalAnnotator id="LSPAnnotator"  order="first"
                            implementationClass="org.wso2.lsp4intellij.contributors.annotator.LSPAnnotator"/>
 
         <!-- needed for Workspace Symbols -->
         <gotoSymbolContributor implementation="org.wso2.lsp4intellij.contributors.symbol.LSPSymbolContributor"
                                      id="LSPSymbolContributor"/>
 
-        <!-- needed for renaming -->
-        <renameHandler implementation="org.wso2.lsp4intellij.contributors.rename.LSPRenameHandler" id="LSPRenameHandler" order="first"/>
-        <renamePsiElementProcessor implementation="org.wso2.lsp4intellij.contributors.rename.LSPRenameProcessor" id="LSPRenameProcessor" order="first"/>
-    </extensions>
 
+    </extensions>
+<!--
+    <application-components>
+        <component>
+            <implementation-class>org.wso2.lsp4intellij.IntellijLanguageClient</implementation-class>
+        </component>
+    </application-components>
+-->
     <actions>
         <!-- needed for hover -->
         <action id="org.intellij.sdk.action.QuickDocAction" class="org.wso2.lsp4intellij.actions.LSPQuickDocAction">
