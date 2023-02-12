@@ -31,9 +31,9 @@ public class DModelPreloadingActivity extends PreloadingActivity {
         ProcessBuilder process = new ProcessBuilder("/Users/cdietrich/.nvm/versions/node/v18.13.0/bin/node", "out/language-server/main.js", "--stdio");
         process.directory(new File("/Users/cdietrich/langium/1x/my-domainmodel"));
         RawCommandServerDefinition definition = new RawCommandServerDefinition("dmodel",
-                //new String[]{"/Users/cdietrich/.nvm/versions/node/v18.13.0/bin/node","/Users/cdietrich/langium/1x/my-domainmodel/out/language-server/main.js", "--stdio"});
-                new String[]{"/Users/cdietrich/eclipse-workspaces/E202303M2/org.xtext.example.mydsl.parent/" +
-                        "org.xtext.example.mydsl.ide/build/distributions/org.xtext.example.mydsl.ide-1.0.0-SNAPSHOT/bin/org.xtext.example.mydsl.ide"});
+                new String[]{"/Users/cdietrich/.nvm/versions/node/v18.13.0/bin/node","/Users/cdietrich/langium/1x/my-domainmodel/out/language-server/main.js", "--stdio"});
+                //new String[]{"/Users/cdietrich/eclipse-workspaces/E202303M2/org.xtext.example.mydsl.parent/" +
+                //        "org.xtext.example.mydsl.ide/build/distributions/org.xtext.example.mydsl.ide-1.0.0-SNAPSHOT/bin/org.xtext.example.mydsl.ide","-log","debug","-trace"});
                 //ProcessBuilderServerDefinition definition = new ProcessBuilderServerDefinition("dmodel", process);
         IntellijLanguageClient.addServerDefinition(definition);
     }

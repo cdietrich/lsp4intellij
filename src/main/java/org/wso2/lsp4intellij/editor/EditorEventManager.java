@@ -471,9 +471,10 @@ public class EditorEventManager {
         // If both of the old diagnostics and the received diagnostics are empty, we can simply return without
         // re-triggering the annotator.
         if (editor.isDisposed() || (this.diagnostics.isEmpty() && diagnostics.isEmpty())) {
+            LOG.info("bye");
             return;
         }
-
+        LOG.info("lala"  + diagnostics);
         synchronized (this.diagnostics) {
             this.diagnostics.clear();
             this.diagnostics.addAll(diagnostics);
@@ -1482,13 +1483,17 @@ public class EditorEventManager {
      * Triggers force full DaemonCodeAnalyzer execution.
      */
     private void updateErrorAnnotations() {
+        LOG.info("updateErrorAnnotations");
         computableReadAction(() -> {
+            LOG.info("aaaaaaaaaaaa");
             final PsiFile file = PsiDocumentManager.getInstance(project)
                     .getCachedPsiFile(editor.getDocument());
             if (file == null) {
+                LOG.info("damn file is null");
+
                 return null;
             }
-            LOG.debug("Triggering force full DaemonCodeAnalyzer execution.");
+            LOG.info("Triggering force full DaemonCodeAnalyzer execution.");
             DaemonCodeAnalyzer.getInstance(project).restart(file);
             return null;
         });

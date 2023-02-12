@@ -54,6 +54,17 @@ public class DefaultRequestManager implements RequestManager {
 
         textDocumentOptions = serverCapabilities.getTextDocumentSync().isRight() ?
                 serverCapabilities.getTextDocumentSync().getRight() : null;
+        if (textDocumentOptions == null) {
+            if (serverCapabilities.getTextDocumentSync().isLeft()) {
+                TextDocumentSyncKind kind = serverCapabilities.getTextDocumentSync().getLeft();
+                LOG.info("TRALALALA: " + kind);
+                if (kind == TextDocumentSyncKind.Incremental) {
+                    textDocumentOptions = new TextDocumentSyncOptions();
+                    textDocumentOptions.setChange(TextDocumentSyncKind.Incremental);
+                    textDocumentOptions.setOpenClose(true);
+                }
+            }
+        }
         workspaceService = server.getWorkspaceService();
         textDocumentService = server.getTextDocumentService();
     }
@@ -252,6 +263,7 @@ public class DefaultRequestManager implements RequestManager {
     // Text document service
     @Override
     public void didOpen(DidOpenTextDocumentParams params) {
+        LOG.info("ARGGGLLLLLL " + textDocumentOptions);
         if (checkStatus()) {
             try {
                 if (Optional.ofNullable(textDocumentOptions).map(x -> x.getOpenClose()).orElse(false)) {

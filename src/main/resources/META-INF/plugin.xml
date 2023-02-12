@@ -29,7 +29,7 @@ Copyright (c) 2023 Christian Dietrich All Rights Reserved.
         <fileDocumentManagerListener implementation="org.wso2.lsp4intellij.listeners.LSPFileDocumentManagerListener"/>
 
         <completion.contributor implementationClass="org.wso2.lsp4intellij.contributors.LSPCompletionContributor"
-                                id="org.wso2.lsp4intellij.contributors.LSPCompletionContributor" language="any"/>
+                                id="org.wso2.lsp4intellij.contributors.LSPCompletionContributor" language="dmodel"/>
 
         <!-- for displaying notifications by lsp -->
         <notificationGroup id="lsp" displayType="STICKY_BALLOON"/>
@@ -41,12 +41,13 @@ Copyright (c) 2023 Christian Dietrich All Rights Reserved.
 
 
         <!-- needed for code diagnostics -->
-        <externalAnnotator id="LSPAnnotator"  order="first"
+        <externalAnnotator id="LSPAnnotator" language="dmodel"
                            implementationClass="org.wso2.lsp4intellij.contributors.annotator.LSPAnnotator"/>
 
         <!-- needed for Workspace Symbols -->
         <gotoSymbolContributor implementation="org.wso2.lsp4intellij.contributors.symbol.LSPSymbolContributor"
-                                     id="LSPSymbolContributor"/>
+                                     id="LSPSymbolContributor"
+        />
 
 
     </extensions>

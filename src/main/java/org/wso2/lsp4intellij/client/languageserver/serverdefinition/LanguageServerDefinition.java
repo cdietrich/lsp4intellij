@@ -56,16 +56,7 @@ public class LanguageServerDefinition {
             streamConnectionProvider = createConnectionProvider(workingDir);
             streamConnectionProvider.start();
             streamConnectionProviders.put(workingDir, streamConnectionProvider);
-            return new ImmutablePair<>(new FilterInputStream(streamConnectionProvider.getInputStream()) {
-                @Override
-                public int read(byte[] b, int off, int len) throws IOException {
-                    int bytes = super.read(b, off, len);
-                    final var payload = new byte[bytes];
-                    System.arraycopy(b, off, payload, 0, bytes);
-                    LOG.info(new String(payload));
-                    return bytes;
-                }
-            }, streamConnectionProvider.getOutputStream());
+            return new ImmutablePair<>(streamConnectionProvider.getInputStream(), streamConnectionProvider.getOutputStream());
         }
     }
 

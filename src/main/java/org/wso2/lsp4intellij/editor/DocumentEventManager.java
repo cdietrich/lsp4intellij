@@ -148,6 +148,7 @@ public class DocumentEventManager {
     }
 
     public void documentOpened() {
+        LOG.info("MAMAMAMAMAMA documentOpened" );
         if (openDocuments.contains(document)) {
             LOG.warn("trying to send open notification for document which was already opened!");
         } else {

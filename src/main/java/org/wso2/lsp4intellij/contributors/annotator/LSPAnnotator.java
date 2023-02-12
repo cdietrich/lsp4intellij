@@ -61,22 +61,25 @@ public class LSPAnnotator extends ExternalAnnotator<Object, Object> {
     @Nullable
     @Override
     public Object collectInformation(@NotNull PsiFile file, @NotNull Editor editor, boolean hasErrors) {
-
+        LOG.info("collectInformation");
         try {
             VirtualFile virtualFile = file.getVirtualFile();
 
             // If the file is not supported, we skips the annotation by returning null.
             if (!FileUtils.isFileSupported(virtualFile) || !IntellijLanguageClient.isExtensionSupported(virtualFile)) {
+                LOG.info("bye 1");
                 return null;
             }
             EditorEventManager eventManager = EditorEventManagerBase.forEditor(editor);
 
             if (eventManager == null) {
+                LOG.info("bye 2");
                 return null;
             }
 
             // If the diagnostics list is locked, we need to skip annotating the file.
             if (!(eventManager.isDiagnosticSyncRequired() || eventManager.isCodeActionSyncRequired())) {
+                LOG.info("bye 3");
                 return null;
             }
             return RESULT;
@@ -88,14 +91,17 @@ public class LSPAnnotator extends ExternalAnnotator<Object, Object> {
     @Nullable
     @Override
     public Object doAnnotate(Object collectedInfo) {
+
+        LOG.info("doAnnotate");
         return RESULT;
     }
 
     @Override
     public void apply(@NotNull PsiFile file, Object annotationResult, @NotNull AnnotationHolder holder) {
-
+        LOG.info("apply");
         LanguageServerWrapper languageServerWrapper = LanguageServerWrapper.forVirtualFile(file.getVirtualFile(), file.getProject());
         if (languageServerWrapper == null || languageServerWrapper.getStatus() != ServerStatus.INITIALIZED) {
+
             return;
         }
 
@@ -128,6 +134,7 @@ public class LSPAnnotator extends ExternalAnnotator<Object, Object> {
     }
 
     private void updateAnnotations(AnnotationHolder holder, EditorEventManager eventManager) {
+        LOG.info("updateAnnotations");
         final List<Annotation> annotations = eventManager.getAnnotations();
         if (annotations == null) {
             return;
@@ -144,6 +151,7 @@ public class LSPAnnotator extends ExternalAnnotator<Object, Object> {
 
     @Nullable
     protected Annotation createAnnotation(Editor editor, AnnotationHolder holder, Diagnostic diagnostic) {
+        LOG.info("createAnnotation");
         final int start = DocumentUtils.LSPPosToOffset(editor, diagnostic.getRange().getStart());
         final int end = DocumentUtils.LSPPosToOffset(editor, diagnostic.getRange().getEnd());
         if (start >= end) {
@@ -157,6 +165,7 @@ public class LSPAnnotator extends ExternalAnnotator<Object, Object> {
     }
 
     private void createAnnotations(AnnotationHolder holder, EditorEventManager eventManager) {
+        LOG.info("createAnnotations");
         final List<Diagnostic> diagnostics = eventManager.getDiagnostics();
         final Editor editor = eventManager.editor;
 

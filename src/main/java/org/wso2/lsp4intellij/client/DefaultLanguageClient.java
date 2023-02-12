@@ -116,8 +116,11 @@ public class DefaultLanguageClient implements LanguageClient {
         Set<EditorEventManager> managers = EditorEventManagerBase.managersForUri(uri);
         if (managers != null) {
             for (EditorEventManager manager : managers) {
+                LOG.info("calling manager " + manager);
                 manager.diagnostics(diagnostics);
             }
+        } else {
+            LOG.info("no manager found for" + uri);
         }
     }
 
